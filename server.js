@@ -391,4 +391,35 @@ if (require.main === module) {
   app.listen(port, () => console.log(`Perfumes by Kache API listening on port ${port}`));
 }
 
-module.exports = { app, pool };
+module.exports = { app, pool };const express = require('express');
+const app = express();
+
+// 1. STANDARD MIDDLEWARE (Body parsers, CORS, etc.)
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// -------------------------------------------------------------
+// 2. GLOBAL REQUEST LOGGER (PASTE HERE - ABOVE ALL ROUTES)
+// -------------------------------------------------------------
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.url}`);
+  next(); // Passes the request to the next route or middleware
+});
+
+// -------------------------------------------------------------
+// 3. YOUR ROUTERS & ROUTES
+// -------------------------------------------------------------
+// Example: app.use('/admin', adminRouter);
+// Example: app.get('/', (req, res) => ...);
+
+
+// -------------------------------------------------------------
+// 4. GLOBAL ERROR HANDLER (PASTE AT THE VERY BOTTOM)
+// -------------------------------------------------------------
+app.use((err, req, res, next) => {
+  console.error('SERVER ERROR:', err.stack || err);
+  res.status(500).json({ error: err.message || 'An unexpected server error occurred.' });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));

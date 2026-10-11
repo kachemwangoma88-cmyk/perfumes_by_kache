@@ -408,10 +408,9 @@ app.use((req, res, next) => {
 
 // -------------------------------------------------------------
 // 3. YOUR ROUTERS & ROUTES
-// -------------------------------------------------------------
-// Example: app.use('/admin', adminRouter);
-// Example: app.get('/', (req, res) => ...);
-
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // -------------------------------------------------------------
 // 4. GLOBAL ERROR HANDLER (PASTE AT THE VERY BOTTOM)

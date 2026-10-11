@@ -407,6 +407,15 @@ app.get('/admin', (req, res) => {
         status: 'Failed to serve index.html', 
         errorMessage: err.message, 
         attemptedPath: err.path 
+// 3. YOUR ROUTERS & ROUTES
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'), (err) => {
+    if (err) {
+      console.error('File send error:', err);
+      res.status(500).json({ 
+        status: 'Failed to serve index.html', 
+        errorMessage: err.message, 
+        attemptedPath: err.path 
       });
     }
   });

@@ -412,17 +412,19 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'), (err) => {
     if (err) {
       console.error('File send error:', err);
-      res.status(500).json({ 
-        error: 'Failed to serve index.html', 
-        details: err.message, 
-        path: err.path 
-      });
+      res.status(500).send('Error loading admin page: ' + err.message);
     }
   });
 });
 
-// -------------------------------------------------------------
-// 4. GLOBAL ERROR HANDLER (PASTE AT THE VERY BOTTOM)
+// 4. GLOBAL ERROR HANDLER
+app.use((err, req, res, next) => {
+  console.error('SERVER ERROR:', err.stack || err);
+  res.status(500).json({ error: err.message || 'An unexpected server error occurred.' });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
 // -------------------------------------------------------------
 app.use((err, req, res, next) => {
   console.error('SERVER ERROR:', err.stack || err);

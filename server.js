@@ -412,7 +412,11 @@ app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'), (err) => {
     if (err) {
       console.error('File send error:', err);
-      res.status(500).send('Error loading page: ' + err.message);
+      res.status(500).json({ 
+        error: 'Failed to serve index.html', 
+        details: err.message, 
+        path: err.path 
+      });
     }
   });
 });

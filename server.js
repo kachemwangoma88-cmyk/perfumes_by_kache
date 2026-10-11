@@ -388,31 +388,22 @@ app.use((error, req, res, next) => {
 });
 
 if (require.main === module) {
-  app.listen(port, () => console.log(`Perfumes by Kache API listening on port ${port}`));
-}
-
-module.exports = { app, pool };const express = require('express');
-const app = express();
-
-// 1. STANDARD MIDDLEWARE (Body parsers, CORS, etc.)
+ // 1. STANDARD MIDDLEWARE
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// -------------------------------------------------------------
-// 2. GLOBAL REQUEST LOGGER (PASTE HERE - ABOVE ALL ROUTES)
-// -------------------------------------------------------------
+// 2. GLOBAL REQUEST LOGGER
 app.use((req, res, next) => {
   console.log(`[REQUEST] ${req.method} ${req.url}`);
-  next(); // Passes the request to the next route or middleware
+  next();
 });
 
-// -------------------------------------------------------------
 // 3. YOUR ROUTERS & ROUTES
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'), (err) => {
     if (err) {
       console.error('File send error:', err);
-      res.status(500).send('Error loading admin page: ' + err.message);
+      res.status(500).send('Error loading page: ' + err.message);
     }
   });
 });
@@ -423,13 +414,10 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || 'An unexpected server error occurred.' });
 });
 
+// 5. START SERVER
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
-// -------------------------------------------------------------
-app.use((err, req, res, next) => {
-  console.error('SERVER ERROR:', err.stack || err);
-  res.status(500).json({ error: err.message || 'An unexpected server error occurred.' });
+app.listen(PORT, () => {
+  console.log(`Perfumes by Kache API listening on port ${PORT}`);
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server listening on port ${PORT}`));
+module.exports = { app, pool };

@@ -409,7 +409,12 @@ app.use((req, res, next) => {
 // -------------------------------------------------------------
 // 3. YOUR ROUTERS & ROUTES
 app.get('/admin', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'index.html'), (err) => {
+    if (err) {
+      console.error('File send error:', err);
+      res.status(500).send('Error loading page: ' + err.message);
+    }
+  });
 });
 
 // -------------------------------------------------------------
